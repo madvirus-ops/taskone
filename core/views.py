@@ -28,10 +28,18 @@ class CreateView(APIView):
         serializer = ArithmeticSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+
+            """Getting datas from submitted form"""
             x = serializer.data['x']  
             y = serializer.data['y'] 
             op = serializer.data['operation_type'] 
+
+            """checking for the length of operator 
+                to determine the kind of opertions to perform
+            """
+
             if len(op) < 15: #not needed
+
                 """main sequence """
                 if op == "addition":
                     res = x + y
@@ -40,24 +48,26 @@ class CreateView(APIView):
                 elif op == "multiplication":
                     res = x * y
                 else:
-                    res = "out of range"
+                    res = "operator not found"
+
                 response = {"slackUsername":"madvirus","result":res,"operation_type":op}
-                """off keyyyy"""
+
+                """to check for specific keywords in the given sentence"""
             else:
-                listt = {"addition","add","sum","multiply","multiplication","times","subtraction","subtract","minus"}
+                operators = {"addition","add","sum","multiply","multiplication","times","subtraction","subtract","minus"}
                 list_int = []
                 list_str =[]
-                sen = op.split(" ")
-                for x in sen:
+                sentence = op.split(" ")
+
+                ##seperating words from numbers
+                for x in sentence:
                     if x.isdigit():
                         list_int.append(x)
                     list_str.append(x)
 
-                    # yy =  list_int[0] + list_int[1]
-                    # print(yy)
-
+                ##looping through sentence and comparing to operators
                 for c in list_str:
-                    if c in listt:
+                    if c in operators:
                         xx = c
                         if xx in {"addition","add"}:
                             res = int(list_int[0]) + int(list_int[1])
@@ -67,12 +77,12 @@ class CreateView(APIView):
                             res = list_int[0] * list_int[1]
                         else:
                             res = "out of range"
+
+                            
                 response = {"slackUsername":"madvirus","result":res,"operation_type":xx}
-                print(response)
+                # print(response)
+            return Response(response)
 
                 #     list_str.append(x)
                 # print(list_int)
-
-
-            pass
         return Response(serializer.errors)

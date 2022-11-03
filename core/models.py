@@ -14,7 +14,7 @@ class ArithmeticModel(models.Model):
 
 
     def __str__(self):
-        return self.x
+        return f'result for {self.x} and {self.y}'
 
 
 
