@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import ArithmeticModel
+# from .models import ArithmeticModel
 
-# Register your models here.
+# # Register your models here.
 
-admin.site.register(ArithmeticModel)
+# admin.site.register(ArithmeticModel)
