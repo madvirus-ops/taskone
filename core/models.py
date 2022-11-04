@@ -7,11 +7,14 @@ class ArithmeticModel(models.Model):
     """to save operations"""
     x = models.IntegerField()
     y = models.IntegerField()
-    operation_type = models.CharField(max_length=255)
 
-    def add(self):
-        pass
+    #Texchoices inherit enums in django
+    class Operation(models.TextChoices):
+        ADDITION = 'addition'
+        MULTIPLICATION = 'multiplication'
+        SUBTRACTION = 'subtraction'
 
+    operation_type = models.CharField(max_length=255,choices=Operation.choices,)
 
     def __str__(self):
         return f'result for {self.x} and {self.y}'
